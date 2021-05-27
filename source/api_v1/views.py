@@ -30,7 +30,8 @@ class OrderApiView(APIView):
         data = request.data
         order = Order.objects.create(name=data['name'], address=data['address'], phone=data['phone'])
         for i in data['order_products']:
-            order_product = OrderProduct.objects.create(product_id=i['product']['id'], order_id=order.pk, qty=i['qty'])
+            product = Product.objects.get(pk=i['product'])
+            order_product = OrderProduct.objects.create(product=product, order=order, qty=i['qty'])
         return Response({"message": "Заказ был создан"}, status=204)
 
     def get_permissions(self):
