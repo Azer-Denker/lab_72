@@ -1,0 +1,231 @@
+[
+{
+  "model": "webapp.product",
+  "pk": 1,
+  "fields": {
+    "name": "qweqwe",
+    "description": "qweqweqwe",
+    "category": "food",
+    "amount": 8,
+    "price": "12.00"
+  }
+},
+{
+  "model": "webapp.product",
+  "pk": 2,
+  "fields": {
+    "name": "zxc",
+    "description": "zxc",
+    "category": "toys",
+    "amount": 226,
+    "price": "322.00"
+  }
+},
+{
+  "model": "webapp.orderproduct",
+  "pk": 1,
+  "fields": {
+    "product": 1,
+    "order": 1,
+    "qty": 1
+  }
+},
+{
+  "model": "webapp.orderproduct",
+  "pk": 2,
+  "fields": {
+    "product": 1,
+    "order": 2,
+    "qty": 2
+  }
+},
+{
+  "model": "webapp.orderproduct",
+  "pk": 3,
+  "fields": {
+    "product": 1,
+    "order": 3,
+    "qty": 4
+  }
+},
+{
+  "model": "webapp.orderproduct",
+  "pk": 4,
+  "fields": {
+    "product": 1,
+    "order": 4,
+    "qty": 6
+  }
+},
+{
+  "model": "webapp.orderproduct",
+  "pk": 5,
+  "fields": {
+    "product": 2,
+    "order": 5,
+    "qty": 1
+  }
+},
+{
+  "model": "webapp.orderproduct",
+  "pk": 6,
+  "fields": {
+    "product": 1,
+    "order": 6,
+    "qty": 1
+  }
+},
+{
+  "model": "webapp.orderproduct",
+  "pk": 7,
+  "fields": {
+    "product": 1,
+    "order": 7,
+    "qty": 1
+  }
+},
+{
+  "model": "webapp.orderproduct",
+  "pk": 8,
+  "fields": {
+    "product": 2,
+    "order": 7,
+    "qty": 1
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$150000$6IIsOa6I9cgk$VtzwbQhkHdjIPEPmE9536JA4p+Nm1QKOBf1Hmnmi7uQ=",
+    "last_login": "2021-05-27T09:58:35.080Z",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2021-05-27T09:12:59Z",
+    "groups": [
+      1
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$150000$Koz6qy5qCnFQ$NNZ573plqEQctI5E5bK7OYURm08ohwR47JoIrUEZAZM=",
+    "last_login": "2021-05-27T09:46:48.254Z",
+    "is_superuser": false,
+    "username": "manager",
+    "first_name": "\u041c\u0435\u043d\u0435\u0434\u0436\u0435\u0440",
+    "last_name": "",
+    "email": "manager@manager.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2021-05-27T09:35:39Z",
+    "groups": [
+      1
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$150000$xoKotQ2T3a9k$2KAzj9qntM6CrICiIRqDBI9lyECQxi+QyiGMPIjs0v8=",
+    "last_login": "2021-05-27T09:46:18.707Z",
+    "is_superuser": false,
+    "username": "user",
+    "first_name": "user",
+    "last_name": "",
+    "email": "user@us.er",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2021-05-27T09:36:51Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "webapp.order",
+  "pk": 1,
+  "fields": {
+    "name": "midl",
+    "phone": "+99612341234",
+    "address": "grgrgrgr",
+    "created_at": "2021-05-27T09:21:35.041Z",
+    "user": null
+  }
+},
+{
+  "model": "webapp.order",
+  "pk": 2,
+  "fields": {
+    "name": "midl",
+    "phone": "+99612341234",
+    "address": "qwe",
+    "created_at": "2021-05-27T09:44:58.638Z",
+    "user": 1
+  }
+},
+{
+  "model": "webapp.order",
+  "pk": 3,
+  "fields": {
+    "name": "midl",
+    "phone": "wqe",
+    "address": "qweqwe",
+    "created_at": "2021-05-27T09:46:36.417Z",
+    "user": 3
+  }
+},
+{
+  "model": "webapp.order",
+  "pk": 4,
+  "fields": {
+    "name": "qweqwe",
+    "phone": "qweqwe",
+    "address": "qweqwe",
+    "created_at": "2021-05-27T09:46:59.307Z",
+    "user": 2
+  }
+},
+{
+  "model": "webapp.order",
+  "pk": 5,
+  "fields": {
+    "name": "midl",
+    "phone": "+99612341234",
+    "address": "gegege",
+    "created_at": "2021-05-27T09:58:21.578Z",
+    "user": 2
+  }
+},
+{
+  "model": "webapp.order",
+  "pk": 6,
+  "fields": {
+    "name": "2222222",
+    "phone": "2222",
+    "address": "222222222",
+    "created_at": "2021-05-27T10:23:01.024Z",
+    "user": 1
+  }
+},
+{
+  "model": "webapp.order",
+  "pk": 7,
+  "fields": {
+    "name": "ww",
+    "phone": "www",
+    "address": "www",
+    "created_at": "2021-05-27T10:23:45.763Z",
+    "user": 1
+  }
+}
+]
