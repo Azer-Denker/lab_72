@@ -5,7 +5,6 @@
 {% block menu %}
     <li><a href="{% url 'webapp:product_update' product.pk %}">Update</a></li>
     <li><a href="{% url 'webapp:product_delete' product.pk %}">Delete</a></li>
-    <li>{% include 'partial/cart_add_form.html' %}</li>
 {% endblock %}
 
 {% block content %}

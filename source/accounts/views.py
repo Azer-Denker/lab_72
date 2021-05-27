@@ -21,11 +21,13 @@ from datetime import datetime
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 
+
 @ensure_csrf_cookie
 def get_token_view(request,*args,**kwargs):
     if request.method == 'GET':
         return HttpResponse
     return HttpResponseNotAllowed('Only get request are alowed')
+
 
 @ensure_csrf_cookie
 def json_echo_view(request, *args, **kwargs):
@@ -37,7 +39,6 @@ def json_echo_view(request, *args, **kwargs):
         data = json.loads(request.body)
         answer['data'] = data
     return JsonResponse(answer)
-
 
 
 class RegisterView(CreateView):
@@ -165,13 +166,6 @@ class UserPasswordChangeView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse('accounts:detail', kwargs={'pk': self.object.pk})
-
-
-# class UserPasswordChangeView(PasswordChangeView):
-#     template_name = 'user_password_change.html'
-#
-#     def get_success_url(self):
-#         return reverse('accounts:detail', kwargs={'pk': self.request.user.pk})
 
 
 class UserPasswordResetEmailView(FormView):

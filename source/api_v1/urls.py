@@ -11,6 +11,6 @@ router.register(r'product', ProductView)
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('orders/<int:pk>/', OrderApiView.as_view(), name='order_api'),
+    path('orders/', OrderApiView.as_view(), name='order_api'),
     path('login/', obtain_auth_token, name='api_token_auth'),
 ]

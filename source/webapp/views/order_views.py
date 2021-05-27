@@ -10,13 +10,9 @@ from webapp.models import Cart, Product, Order, OrderProduct
 
 
 class CartView(ListView):
-    # model = Cart
     template_name = 'order/cart_view.html'
     context_object_name = 'cart'
 
-    # вместо model = Cart
-    # для выполнения запроса в базу через модель
-    # вместо подсчёта total-ов в Python-е.
     def get_queryset(self):
         return Cart.get_with_product()
 
@@ -27,7 +23,6 @@ class CartView(ListView):
         context = super().get_context_data(object_list=object_list, **kwargs)
         context['cart_total'] = Cart.get_cart_total(session=session)
         context['form'] = OrderForm()
-        # print(context['cart'])
         context['cart'] = context['cart'].filter(session=session)
         return context
 
@@ -43,7 +38,6 @@ class CartAddView(CreateView):
     def form_valid(self, form):
         qty = form.cleaned_data.get('qty', 1)
         if not self.request.session.session_key:
-            # self.request.session['products'] = []
             self.request.session.save()
         session = Session.objects.get(session_key=self.request.session.session_key)
         try:
@@ -61,7 +55,6 @@ class CartAddView(CreateView):
         return redirect(self.get_success_url())
 
     def get_success_url(self):
-        # бонус
         next = self.request.GET.get('next')
         if next:
             return next
@@ -72,17 +65,14 @@ class CartDeleteView(DeleteView):
     model = Cart
     success_url = reverse_lazy('webapp:cart_view')
 
-    # удаление без подтверждения
     def get(self, request, *args, **kwargs):
         return self.delete(request, *args, **kwargs)
 
 
-# бонус
 class CartDeleteOneView(DeleteView):
     model = Cart
     success_url = reverse_lazy('webapp:cart_view')
 
-    # удаление без подтверждения
     def get(self, request, *args, **kwargs):
         return self.delete(request, *args, **kwargs)
 
@@ -107,10 +97,6 @@ class OrderCreateView(CreateView):
     def form_valid(self, form):
         response = super().form_valid(form)
         order = self.object
-        # оптимально:
-        # цикл сам ничего не создаёт, не обновляет, не удаляет
-        # цикл работает только с объектами в памяти
-        # и заполняет два списка: products и order_products
         try:
             order.user = self.request.user
         except ValueError:
@@ -126,22 +112,19 @@ class OrderCreateView(CreateView):
             products.append(product)
             order_product = OrderProduct(order=order, product=product, qty=qty)
             order_products.append(order_product)
-        # массовое создание всех товаров в заказе
         OrderProduct.objects.bulk_create(order_products)
-        # массовое обновление остатка у всех товаров
         Product.objects.bulk_update(products, ('amount',))
-        # массовое удаление всех товаров в корзине
         cart_products.delete()
         return response
 
     def form_invalid(self, form):
         return redirect('webapp:cart_view')
 
+
 class WatchOrdersView(LoginRequiredMixin, ListView):
     model = Order
     template_name = 'order/orders_View.html'
     context_object_name = 'orders'
-
 
     def get_queryset(self):
         data = super().get_queryset()
