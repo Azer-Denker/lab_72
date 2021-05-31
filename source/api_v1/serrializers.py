@@ -1,33 +1,22 @@
-from rest_framework import serializers
+from rest_framework.serializers import ModelSerializer, CharField
+from webapp.models import Quote
 
-from webapp.models import Product, Order, OrderProduct, Cart
 
+class QuoteSerializer(ModelSerializer):
+    status_display = CharField(max_length=20, source='get_status_display',
+                               read_only=True)
 
-class ProductSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Product
+        model = Quote
         fields = '__all__'
+        read_only_fields = ['text', 'author', 'email', 'rating', 'status']
 
 
-class OrderProductSerializer(serializers.ModelSerializer):
-    product = ProductSerializer(read_only=True)
-
-    class Meta:
-        model = OrderProduct
-        fields = '__all__'
+class QuoteCreateSerializer(QuoteSerializer):
+    class Meta(QuoteSerializer.Meta):
+        read_only_fields = ['rating', 'status']
 
 
-class OrderSerializer(serializers.ModelSerializer):
-    order_products = OrderProductSerializer(many=True, read_only=True)
-
-    class Meta:
-        model = Order
-        fields = ('name', 'phone', 'address', 'order_products',)
-
-
-# class CartSerializer(serializers.ModelSerializer):
-#     product = ProductSerializer(read_only=True)
-#
-#     class Meta:
-#         model = Cart
-#         fields = ('product', 'name', 'phone', 'address')
+class QuoteUpdateSerializer(QuoteSerializer):
+    class Meta(QuoteSerializer.Meta):
+        read_only_fields = ['author', 'email', 'rating']

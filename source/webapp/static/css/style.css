@@ -215,3 +215,27 @@ input[type='submit']:hover {
     border-color: #444444;
     color: #444444;
 }
+
+hidden {
+    display: none;
+}
+
+.quote {
+    box-sizing: border-box;
+    border: 1px solid black;
+    border-radius: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.like{
+    display: inline-block;
+    box-sizing: border-box;
+    margin-left: 20px;
+}
+
+.ml-3{
+    box-sizing: border-box;
+    padding-left: 20px;
+
+}

@@ -1,16 +1,15 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from rest_framework.authtoken.views import obtain_auth_token
+from .views import QuoteViewSet, VoteApiView
 
-from api_v1.views import ProductView, OrderApiView
+router = DefaultRouter()
+router.register('quote', QuoteViewSet, basename='quote')
 
 app_name = 'api_v1'
 
-router = DefaultRouter()
-router.register(r'product', ProductView)
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('orders/', OrderApiView.as_view(), name='order_api'),
-    path('login/', obtain_auth_token, name='api_token_auth'),
+    path('quote/<int:pk>/like', VoteApiView.as_view(), name='quote_like'),
+    path('quote/<int:pk>/dislike', VoteApiView.as_view(), name='quote_dislike')
 ]

@@ -1,62 +1,44 @@
+from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.permissions import SAFE_METHODS, IsAdminUser
 
-from api_v1.serrializers import ProductSerializer, OrderSerializer
-from webapp.models import Product, Order, OrderProduct
-
-
-class ProductView(ModelViewSet):
-    queryset = Product.objects.all()
-    serializer_class = ProductSerializer
-    permissions_classes = [IsAdminUser]
-
-    def get_permissions(self):
-        if self.request.method in SAFE_METHODS:
-            return []
-        return super().get_permissions()
+from api_v1.serrializers import QuoteCreateSerializer, QuoteUpdateSerializer, QuoteSerializer
+from webapp.models import Quote, Vote
+from api_v1.permission import QuotePermissions
 
 
-class OrderApiView(APIView):
-    permissions_classes = [IsAdminUser]
+class QuoteViewSet(ModelViewSet):
+    permission_classes = [QuotePermissions]
 
+    def get_queryset(self):
+        if self.request.method == 'GET' and \
+                not self.request.user.has_perm('webapp.quote_view'):
+            return Quote.get_moderated()
+        return Quote.objects.all()
+
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return QuoteCreateSerializer
+        elif self.request.method == 'PUT':
+            return QuoteUpdateSerializer
+        return QuoteSerializer
+
+
+class VoteApiView(APIView):
     def get(self, request, *args, **kwargs):
-        order = Order.objects.all()
-        srl = OrderSerializer(order, many=True)
-        return Response(srl.data)
-
-    def post(self, request, *args, **kwargs):
-        data = request.data
-        order = Order.objects.create(name=data['name'], address=data['address'], phone=data['phone'])
-        for i in data['order_products']:
-            product = Product.objects.get(pk=i['product'])
-            order_product = OrderProduct.objects.create(product=product, order=order, qty=i['qty'])
-        return Response({"message": "Заказ был создан"}, status=204)
-
-    def get_permissions(self):
-        if self.request.method not in SAFE_METHODS:
-            return []
-        return super().get_permissions()
-
-
-# class CartApiView(APIView):
-#     permission_classes = [IsAdminUser]
-#
-#     def get(self, request, *args, **kwargs):
-#         if 'pk' in kwargs.keys():
-#             article = get_object_or_404(Article, pk=kwargs.get('pk'))
-#             slr = ArticleSerializer(article)
-#             return JsonResponse(slr.data)
-#
-#     def put(self, request, *args, **kwargs):
-#         article = get_object_or_404(Article.objects.all(), pk=kwargs.get('pk'))
-#         data = json.loads(request.body)
-#         srl = ArticleSerializer(instance=article, data=data, partial=True)
-#         if srl.is_valid(raise_exception=True):
-#             article = srl.update(article, srl.validated_data)
-#             return JsonResponse(srl.data, safe=False)
-#         else:
-#             response = JsonResponse(srl.errors, safe=False)
-#             response.status_code = 400
-#             return response
+        quote = get_object_or_404(Quote, pk=kwargs.get('pk'))
+        try:
+            Vote.objects.get(session_key=self.request.session.session_key, quote_id=quote)
+            return Response({'message': 'you already voted it'}, status=200)
+        except Vote.DoesNotExist:
+            if self.request.path.split('/')[-1] == 'like':
+                Vote.objects.create(session_key=self.request.session.session_key, quote=quote, rating=1)
+                quote.rating += 1
+                quote.save()
+                return Response({'message': 'you like it'}, status=200)
+            else:
+                Vote.objects.create(session_key=self.request.session.session_key, quote=quote, rating=-1)
+                quote.rating -= 1
+                quote.save()
+                return Response({'message': 'you dislike it'}, status=200)
