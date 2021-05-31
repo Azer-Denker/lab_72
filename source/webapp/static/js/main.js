@@ -1,4 +1,6 @@
 const BASE_API_URL = '/api/v1/'
+let container = document.getElementById('quotes')
+let form = document.getElementById('form')
 async function makeRequest(url, method='GET', data=undefined) {
     let opts = {method, headers: {}};
 
@@ -73,8 +75,9 @@ async function dislike_quote(event) {
 }
 
 function show_form(event){
+    container.innerText=""
     event.preventDefault()
-    let form = document.getElementById('form')
+
     form.style.display = "block"
 }
 
@@ -90,6 +93,8 @@ function show_one_quote(event){
 
 async function get_quote(event){
     event.preventDefault()
+    form.style.display = 'none'
+    container.innerText=""
     let data = await makeRequest('/api/v1/quote/', 'GET').then(response => response.json())
     console.log(data);
     for (quote of data) {
@@ -126,7 +131,6 @@ async function get_quote(event){
             div.appendChild(dislike)
             dislike.addEventListener('click', dislike_quote)
 
-        container = document.getElementById('quotes')
         container.appendChild(div)
         container.classList.remove("hidden");
         form = document.getElementById('form')
